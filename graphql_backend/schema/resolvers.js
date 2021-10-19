@@ -1,5 +1,6 @@
 const { UserList, MovieList } = require("../fakeData");
 const _ = require("lodash");
+
 const resolvers = {
   // contain all of the resolvers function
   Query: {
@@ -35,6 +36,33 @@ const resolvers = {
         (movie) =>
           movie.yearOfPublication >= 200 && movie.yearOfPublication <= 2010
       );
+    },
+  },
+  Mutation: {
+    createUser: (parent, args) => {
+      const user = args.input;
+      const lastID = UserList[UserList.length - 1].id;
+      console.log(user);
+      user.id = lastID + 1;
+      UserList.push(user);
+      return user;
+    },
+    updateUsername: (parent, args) => {
+      const { id, newUsername } = args.input;
+      let userUpdated;
+      UserList.forEach((user) => {
+        if (user.id === Number(id)) {
+          user.username = newUsername;
+          userUpdated = user;
+        }
+      });
+
+      return userUpdated;
+    },
+    deleteUser: (parent, args) => {
+      const id = args.id;
+      _.remove(UserList, (user) => user.id === Number(id));
+      return null;
     },
   },
 };
