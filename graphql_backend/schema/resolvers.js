@@ -1,4 +1,4 @@
-const { UserList } = require("../fakeData");
+const { UserList, MovieList } = require("../fakeData");
 const _ = require("lodash");
 const resolvers = {
   // contain all of the resolvers function
@@ -14,6 +14,27 @@ const resolvers = {
         id: Number(id),
       });
       return user;
+    },
+    // MOVIE RESOLVERS
+    Movies: () => {
+      // api call to db
+      return MovieList;
+    },
+    Movie: (parent, args) => {
+      const name = args.name;
+      const movie = _.find(MovieList, {
+        name: name,
+      });
+      return movie;
+    },
+  },
+  User: {
+    favoriteMovies: () => {
+      return _.filter(
+        MovieList,
+        (movie) =>
+          movie.yearOfPublication >= 200 && movie.yearOfPublication <= 2010
+      );
     },
   },
 };
