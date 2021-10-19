@@ -12,6 +12,7 @@ const typeDefs = gql`
   type Query {
     # all query fields
     Users: [User!]!
+    User(id: ID!): User!
   }
   enum Nationality {
     CANADA
